@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Home - Announcements{% endblock %}
 {% block content %}
-<h1>Welcome</h1>
-<p>This is a announcements site. Use the <a href='/announcements/'>Announcements</a> page to view posts.</p>
+<section class="hero-section">
+  <h1>Welcome to Announcements</h1>
+  <p>Stay informed with the latest announcements and updates. Join the conversation with comments and feedback.</p>
+  <div>
+    <a href="/announcements/" class="btn btn-primary btn-lg">View All Announcements</a>
+  </div>
+</section>
+
+<section class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Latest Posts</h5>
+        <p class="card-text">Browse all announcements and stay up-to-date with the latest information.</p>
+        <a href="/announcements/" class="btn btn-primary">View Announcements</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Participate</h5>
+        <p class="card-text">Leave comments and engage with the community about any announcement.</p>
+        <a href="/announcements/" class="btn btn-primary">Start Commenting</a>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

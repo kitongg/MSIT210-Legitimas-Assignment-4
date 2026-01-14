@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 {% block title %}Announcements{% endblock %}
 {% block content %}
-<h2>Announcements Lists</h2>
-{% if announcements %}
-  <ul class="ann-list">
-    {% for a in announcements %}
-      <li><a href="/announcements/{{ a.id }}/">{{ a.title }}</a> <small>— {{ a.created_at|date:'M j, Y' }}</small></li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No announcements yet. Add announcements in admin panel.</p>
-{% endif %}
+<section>
+  <h1 class="mb-4">Announcements</h1>
+  {% if announcements %}
+    <div class="row">
+      {% for a in announcements %}
+        <div class="col-12 mb-4">
+          <div class="announcement">
+            <h3>
+              <a href="/announcements/{{ a.id }}/" style="color: #007bff; text-decoration: none;">
+                {{ a.title }}
+              </a>
+            </h3>
+            <p class="meta">Posted: {{ a.created_at|date:'M j, Y H:i' }}</p>
+            <p>{{ a.content|truncatechars:150 }}</p>
+            <a href="/announcements/{{ a.id }}/" class="btn btn-sm btn-primary">Read More</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">No Announcements Yet</h4>
+      <p>There are currently no announcements. Please check back later or visit the admin panel to add new announcements.</p>
+    </div>
+  {% endif %}
+</section>
 {% endblock %}

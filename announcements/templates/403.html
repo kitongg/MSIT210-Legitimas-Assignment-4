@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Access Denied{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Access Denied (403)</h4>
+  <p>
+    Your request was rejected due to a security issue. This typically happens when:
+  </p>
+  <ul>
+    <li>The CSRF token is missing or invalid</li>
+    <li>Your session has expired</li>
+    <li>The form was submitted from an untrusted source</li>
+  </ul>
+  <hr>
+  <p class="mb-0">
+    <a href="{% url 'home' %}" class="btn btn-primary">Return to Home</a>
+  </p>
+</div>
+{% endblock %}

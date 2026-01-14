@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{ announcement.title }}{% endblock %}
+
 {% block content %}
-<article class="announcement">
-  <h2>{{ announcement.title }}</h2>
-  <p class="meta">Posted: {{ announcement.created_at|date:'M j, Y H:i' }}</p>
+<article class="announcement mb-5">
+  <h1>{{ announcement.title }}</h1>
+<p class="meta">Posted: {{ announcement.created_at|date:'M j, Y H:i' }}</p>
 
   <div id="excerpt">
     {{ announcement.content|truncatechars:200|linebreaks }}
@@ -13,12 +14,16 @@
     {{ announcement.content|linebreaks }}
   </div>
 
-  <button id="toggle" aria-expanded="false">Read more</button>
+  {% if announcement.content|length > 200 %}
+    <button id="toggle" aria-expanded="false" class="btn btn-link p-0 mt-3">Read more</button>
+  {% endif %}
 </article>
 
 <script>
   (function(){
     const btn = document.getElementById('toggle');
+    if (!btn) return;
+    
     const full = document.getElementById('full');
     const excerpt = document.getElementById('excerpt');
 
@@ -37,4 +42,73 @@
     });
   })();
 </script>
+
+<!-- Comments Section -->
+<section class="comments-section">
+  <h3>Comments</h3>
+  {% if comments %}
+    <div class="comments-list">
+      {% for comment in comments %}
+        <div class="comment">
+          <strong>{{ comment.name }}</strong>
+          <span class="comment-meta">on {{ comment.created_at|date:"M j, Y H:i" }}</span>
+          <p>{{ comment.body|linebreaks }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info" role="alert">
+      <p class="mb-0">No comments yet. Be the first to comment!</p>
+    </div>
+  {% endif %}
+</section>
+
+<!-- Add Comment Form -->
+<section class="mt-5">
+  <h3>Add a Comment</h3>
+  <form method="POST" novalidate>
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong>
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label for="{{ form.name.id_for_label }}" class="form-label">Your Name</label>
+      <input type="text" name="name" class="form-control" id="{{ form.name.id_for_label }}" placeholder="Enter your name" required>
+      {% if form.name.errors %}
+        <div class="invalid-feedback d-block">
+          {% for error in form.name.errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.body.id_for_label }}" class="form-label">Your Comment</label>
+      <textarea name="body" class="form-control" id="{{ form.body.id_for_label }}" rows="4" placeholder="Share your thoughts..." required></textarea>
+      {% if form.body.errors %}
+        <div class="invalid-feedback d-block">
+          {% for error in form.body.errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg">Submit Comment</button>
+  </form>
+</section>
+
+<div class="mt-4">
+  <a href="/announcements/" class="btn btn-outline-secondary">Back to Announcements</a>
+</div>
+
 {% endblock %}
